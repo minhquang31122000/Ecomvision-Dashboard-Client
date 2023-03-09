@@ -2,7 +2,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { Dashboard, Layout, Products, Customers } from "scenes";
+import { Dashboard, Layout, Products, Customers, Transactions } from "scenes";
 import { themeSettings } from "theme";
 
 const App = () => {
@@ -20,6 +20,7 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/customers" element={<Customers />} />
+              <Route path="/transactions" element={<Transactions />} />
             </Route>
           </Routes>
         </ThemeProvider>
