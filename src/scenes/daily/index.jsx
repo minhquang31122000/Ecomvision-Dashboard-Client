@@ -1,14 +1,17 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { ResponsiveLine } from "@nivo/line";
 import { Header } from "components";
 import { useGetSalesQuery } from "state/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const Daily = () => {
   const theme = useTheme();
-  const { data } = useGetSalesQuery();
+  const { data, isLoading } = useGetSalesQuery();
+  const dispatch = useDispatch();
 
   const [startDate, setStartDate] = useState(new Date("2021-02-01"));
   const [endDate, setEndDate] = useState(new Date("2021-03-01"));
@@ -50,6 +53,14 @@ const Daily = () => {
 
     return [formattedData];
   }, [data, endDate, startDate]);
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

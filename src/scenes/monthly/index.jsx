@@ -1,13 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Box, useTheme } from "@mui/material";
 import { ResponsiveLine } from "@nivo/line";
 import { Header } from "components";
 import { useGetSalesQuery } from "state/api";
+import { useDispatch } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
+import { setIsShowGlobalLoading } from "state";
 
 const Monthly = () => {
   const theme = useTheme();
-  const { data } = useGetSalesQuery();
+  const { data, isLoading } = useGetSalesQuery();
+  const dispatch = useDispatch();
 
   const [formattedData] = useMemo(() => {
     if (!data) return [];
@@ -41,6 +44,14 @@ const Monthly = () => {
 
     return [formattedData];
   }, [data]);
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

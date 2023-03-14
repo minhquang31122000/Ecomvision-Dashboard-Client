@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@mui/system";
 import { useGetGeographyQuery } from "state/api";
 import { Box } from "@mui/material";
 import { Header } from "components";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoData } from "state/geoData";
+import { useDispatch } from "react-redux";
+import { setIsShowGlobalLoading } from "state";
 
 const Geography = () => {
   const theme = useTheme();
-  const { data } = useGetGeographyQuery();
+  const { data, isLoading } = useGetGeographyQuery();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">
