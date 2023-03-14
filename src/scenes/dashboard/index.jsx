@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -10,11 +10,14 @@ import { useGetDashboardQuery } from "state/api";
 import { BreakdownChart, Header, OverviewChart, StatBox } from "components";
 import { DownloadOutlined, Email, PointOfSale } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width:1200px)");
   const { data, isLoading } = useGetDashboardQuery();
+  const dispatch = useDispatch();
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
@@ -36,6 +39,14 @@ const Dashboard = () => {
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
     },
   ];
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

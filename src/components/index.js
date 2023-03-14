@@ -7,6 +7,7 @@ import OverviewChart from "./OverviewChart";
 import BreakdownChart from "./BreakdownChart";
 import CustomColumnMenu from "./CustomColumnMenu";
 import StatBox from "./StatBox";
+import GlobalLoading from "./GlobalLoading";
 
 export {
   FlexBetween,
@@ -18,4 +19,5 @@ export {
   BreakdownChart,
   CustomColumnMenu,
   StatBox,
+  GlobalLoading,
 };

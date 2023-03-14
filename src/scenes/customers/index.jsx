@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { useGetCustomersQuery } from "state/api";
 import { Header } from "components";
 import { DataGrid } from "@mui/x-data-grid";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const Customers = () => {
   const theme = useTheme();
   const { data, isLoading } = useGetCustomersQuery();
+  const dispatch = useDispatch();
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
@@ -23,6 +26,14 @@ const Customers = () => {
     { field: "occupation", headerName: "Occupation", flex: 1 },
     { field: "role", headerName: "Role", flex: 0.5 },
   ];
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

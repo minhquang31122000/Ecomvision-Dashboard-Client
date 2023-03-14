@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -13,10 +13,21 @@ import {
 } from "@mui/material";
 import { useGetProductsQuery } from "state/api";
 import { Header } from "components";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

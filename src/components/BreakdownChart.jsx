@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useGetSalesQuery } from "state/api";
 import { Box, Typography, useTheme } from "@mui/material";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const BreakdownChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetSalesQuery();
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   if (!data || isLoading) return "Loading...";
 

@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { CustomColumnMenu, Header } from "components";
 import { useGetUserPerformanceQuery } from "state/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsShowGlobalLoading } from "state";
 
 const Performance = () => {
   const theme = useTheme();
   const userId = useSelector((state) => state.global.userId);
   const { data, isLoading } = useGetUserPerformanceQuery(userId);
+  const dispatch = useDispatch();
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
@@ -30,6 +32,13 @@ const Performance = () => {
     },
   ];
 
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
   return (
     <Box m="1.5rem 2.5rem">
       <Header

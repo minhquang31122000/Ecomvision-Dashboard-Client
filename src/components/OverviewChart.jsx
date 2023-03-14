@@ -1,11 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material";
 import { useGetSalesQuery } from "state/api";
 import { ResponsiveLine } from "@nivo/line";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const OverviewChart = ({ isDashboard = false, view }) => {
   const theme = useTheme();
   const { data, isLoading } = useGetSalesQuery();
+  const dispatch = useDispatch();
 
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
     if (!data) return [];
@@ -45,6 +48,14 @@ const OverviewChart = ({ isDashboard = false, view }) => {
 
     return [[totalSalesLine], [totalUnitsLine]];
   }, [data]);
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   if (!data || isLoading) return "Loading...";
 

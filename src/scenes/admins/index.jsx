@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { CustomColumnMenu, Header } from "components";
 import { useGetAdminsQuery } from "state/api";
+import { useDispatch } from "react-redux";
+import { setIsShowGlobalLoading } from "state";
 
 const Admins = () => {
   const theme = useTheme();
   const { data, isLoading } = useGetAdminsQuery();
+  const dispatch = useDispatch();
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
@@ -23,6 +26,14 @@ const Admins = () => {
     { field: "occupation", headerName: "Occupation", flex: 1 },
     { field: "role", headerName: "Role", flex: 0.5 },
   ];
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { useGetTransactionsQuery } from "state/api";
 import { DataGridCustomToolbar, Header } from "components";
 import { DataGrid } from "@mui/x-data-grid";
+import { setIsShowGlobalLoading } from "state";
+import { useDispatch } from "react-redux";
 
 const Transactions = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
@@ -40,6 +43,14 @@ const Transactions = () => {
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
     },
   ];
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsShowGlobalLoading(true));
+    } else {
+      dispatch(setIsShowGlobalLoading(false));
+    }
+  }, [isLoading, dispatch]);
 
   return (
     <Box m="1.5rem 2.5rem">
