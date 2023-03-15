@@ -22,7 +22,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { setMode } from "state";
+import { setMode } from "store";
 
 const Navbar = ({ user, onChangeSidebar }) => {
   const dispatch = useDispatch();

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
-import { useGetCustomersQuery } from "state/api";
+import { useGetCustomersQuery } from "store/api";
 import { Header } from "components";
 import { DataGrid } from "@mui/x-data-grid";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
 
 const Customers = () => {

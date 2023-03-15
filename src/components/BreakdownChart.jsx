@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { ResponsivePie } from "@nivo/pie";
-import { useGetSalesQuery } from "state/api";
+import { useGetSalesQuery } from "store/api";
 import { Box, Typography, useTheme } from "@mui/material";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
 
 const BreakdownChart = ({ isDashboard = false }) => {

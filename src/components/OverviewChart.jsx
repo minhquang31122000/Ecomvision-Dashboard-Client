@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material";
-import { useGetSalesQuery } from "state/api";
+import { useGetSalesQuery } from "store/api";
 import { ResponsiveLine } from "@nivo/line";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
 
 const OverviewChart = ({ isDashboard = false, view }) => {

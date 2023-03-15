@@ -11,9 +11,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useGetProductsQuery } from "state/api";
+import { useGetProductsQuery } from "store/api";
 import { Header } from "components";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
 
 const Products = () => {

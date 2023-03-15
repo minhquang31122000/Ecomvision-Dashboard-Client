@@ -15,7 +15,7 @@ import {
   Breakdown,
   Admins,
   Performance,
-} from "scenes";
+} from "pages";
 import { themeSettings } from "theme";
 
 const App = () => {

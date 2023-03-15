@@ -3,8 +3,8 @@ import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { GlobalLoading, Navbar, Sidebar } from "components";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetUserQuery } from "state/api";
-import { setIsShowGlobalLoading } from "state";
+import { useGetUserQuery } from "store/api";
+import { setIsShowGlobalLoading } from "store";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");

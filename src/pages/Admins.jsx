@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { CustomColumnMenu, Header } from "components";
-import { useGetAdminsQuery } from "state/api";
+import { useGetAdminsQuery } from "store/api";
 import { useDispatch } from "react-redux";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 
 const Admins = () => {
   const theme = useTheme();

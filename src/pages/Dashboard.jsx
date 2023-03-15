@@ -6,11 +6,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useGetDashboardQuery } from "state/api";
+import { useGetDashboardQuery } from "store/api";
 import { BreakdownChart, Header, OverviewChart, StatBox } from "components";
 import { DownloadOutlined, Email, PointOfSale } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
 
 const Dashboard = () => {

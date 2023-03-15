@@ -1,21 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
+import { useGetTransactionsQuery } from "store/api";
+import { DataGridCustomToolbar, Header } from "components";
 import { DataGrid } from "@mui/x-data-grid";
-import { CustomColumnMenu, Header } from "components";
-import { useGetUserPerformanceQuery } from "state/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
+import { useDispatch } from "react-redux";
 
-const Performance = () => {
+const Transactions = () => {
   const theme = useTheme();
-  const userId = useSelector((state) => state.global.userId);
-  const { data, isLoading } = useGetUserPerformanceQuery(userId);
   const dispatch = useDispatch();
+
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [sort, setSort] = useState({});
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+
+  const { data, isLoading } = useGetTransactionsQuery({
+    page,
+    pageSize,
+    sort: JSON.stringify(sort),
+    search,
+  });
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
     { field: "userId", headerName: "User ID", flex: 1 },
     { field: "createdAt", headerName: "Created At", flex: 1 },
+
     {
       field: "products",
       headerName: "# of Products",
@@ -39,15 +51,12 @@ const Performance = () => {
       dispatch(setIsShowGlobalLoading(false));
     }
   }, [isLoading, dispatch]);
+
   return (
     <Box m="1.5rem 2.5rem">
-      <Header
-        title="PERFORMANCE"
-        subTitle="Track your Affiliate Sales Performance Here"
-      />
+      <Header title="TRANSACTIONS" subTitle="Entire list of transactions" />
       <Box
-        mt="40px"
-        height="75vh"
+        height="80vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -74,12 +83,27 @@ const Performance = () => {
         }}
       >
         <DataGrid
-          loading={isLoading || !data}
+          loading={isLoading}
           getRowId={(row) => row._id}
-          rows={(data && data.sales) || []}
-          columns={columns || []}
-          components={{
-            ColumnMenu: CustomColumnMenu,
+          rows={(data && data.transactions) || []}
+          columns={columns}
+          rowCount={(data && data.total) || 0}
+          rowsPerPageOptions={[20, 50, 100]}
+          pagination
+          page={page}
+          pageSize={pageSize}
+          paginationMode="server"
+          sortable="server"
+          onPageChange={(newPage) => setPage(newPage)}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          onSortModelChange={(newSort) => setSort(...newSort)}
+          components={{ Toolbar: DataGridCustomToolbar }}
+          componentsProps={{
+            toolbar: {
+              searchInput,
+              setSearchInput,
+              setSearch,
+            },
           }}
         />
       </Box>
@@ -87,4 +111,4 @@ const Performance = () => {
   );
 };
 
-export default Performance;
+export default Transactions;

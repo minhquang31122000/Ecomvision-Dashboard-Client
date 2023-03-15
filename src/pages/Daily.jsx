@@ -1,21 +1,25 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { ResponsiveLine } from "@nivo/line";
 import { Header } from "components";
-import { useGetSalesQuery } from "state/api";
+import { useGetSalesQuery } from "store/api";
+import { setIsShowGlobalLoading } from "store";
 import { useDispatch } from "react-redux";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { setIsShowGlobalLoading } from "state";
 
-const Monthly = () => {
+const Daily = () => {
   const theme = useTheme();
   const { data, isLoading } = useGetSalesQuery();
   const dispatch = useDispatch();
 
+  const [startDate, setStartDate] = useState(new Date("2021-02-01"));
+  const [endDate, setEndDate] = useState(new Date("2021-03-01"));
+
   const [formattedData] = useMemo(() => {
     if (!data) return [];
 
-    const { monthlyData } = data;
+    const { dailyData } = data;
     const totalSalesLine = {
       id: "totalSales",
       color: theme.palette.secondary.main,
@@ -28,22 +32,27 @@ const Monthly = () => {
       data: [],
     };
 
-    Object.values(monthlyData).forEach(({ month, totalSales, totalUnits }) => {
-      totalSalesLine.data = [
-        ...totalSalesLine.data,
-        { x: month, y: totalSales },
-      ];
+    Object.values(dailyData).forEach(({ date, totalSales, totalUnits }) => {
+      const dateFormatted = new Date(date);
+      if (dateFormatted >= startDate && dateFormatted <= endDate) {
+        const splitDate = date.substring(date.indexOf("-" + 1));
 
-      totalUnitsLine.data = [
-        ...totalUnitsLine.data,
-        { x: month, y: totalUnits },
-      ];
+        totalSalesLine.data = [
+          ...totalSalesLine.data,
+          { x: splitDate, y: totalSales },
+        ];
+
+        totalUnitsLine.data = [
+          ...totalUnitsLine.data,
+          { x: splitDate, y: totalUnits },
+        ];
+      }
     });
 
     const formattedData = [totalSalesLine, totalUnitsLine];
 
     return [formattedData];
-  }, [data]);
+  }, [data, endDate, startDate]);
 
   useEffect(() => {
     if (isLoading) {
@@ -55,9 +64,29 @@ const Monthly = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="MONTHLY SALES" subTitle="Chart of monthly sales" />
+      <Header title="DAILY SALES" subTitle="Chart of daily sales" />
       <Box height="75vh">
-        <Box display="flex" justifyContent="flex-end"></Box>
+        <Box display="flex" justifyContent="flex-end">
+          <Box>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </Box>
+          <Box>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+            />
+          </Box>
+        </Box>
 
         {data ? (
           <ResponsiveLine
@@ -106,7 +135,7 @@ const Monthly = () => {
               },
             }}
             yFormat=" >-.2f"
-            // curve="catmullRom"
+            curve="catmullRom"
             axisTop={null}
             axisRight={null}
             axisBottom={{
@@ -170,4 +199,4 @@ const Monthly = () => {
   );
 };
 
-export default Monthly;
+export default Daily;

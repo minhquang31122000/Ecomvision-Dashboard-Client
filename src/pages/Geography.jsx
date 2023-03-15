@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useTheme } from "@mui/system";
-import { useGetGeographyQuery } from "state/api";
+import { useGetGeographyQuery } from "store/api";
 import { Box } from "@mui/material";
 import { Header } from "components";
 import { ResponsiveChoropleth } from "@nivo/geo";
-import { geoData } from "state/geoData";
+import { geoData } from "store/geoData";
 import { useDispatch } from "react-redux";
-import { setIsShowGlobalLoading } from "state";
+import { setIsShowGlobalLoading } from "store";
 
 const Geography = () => {
   const theme = useTheme();
