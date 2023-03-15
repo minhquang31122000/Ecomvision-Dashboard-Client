@@ -1,6 +1,6 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import {
   Dashboard,
@@ -17,10 +17,19 @@ import {
   Performance,
 } from "pages";
 import { themeSettings } from "theme";
+import { setMode } from "store";
 
 const App = () => {
+  const dispatch = useDispatch();
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  useEffect(() => {
+    const themeModeLocal = window.localStorage.getItem("theme");
+    if (!themeModeLocal) return;
+
+    dispatch(setMode(themeModeLocal === "light" ? "light" : "dark"));
+  }, [dispatch]);
 
   return (
     <div className="app">

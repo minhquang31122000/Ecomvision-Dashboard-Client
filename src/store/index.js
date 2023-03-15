@@ -10,8 +10,16 @@ export const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === "light" ? "dark" : "light";
+    setMode: (state, action) => {
+      state.mode = action.payload;
+      window.localStorage.setItem("theme", action.payload);
+      document.documentElement.classList.add(action.payload);
+
+      if (action.payload === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.remove("light");
+      }
     },
     setIsShowGlobalLoading: (state, action) => {
       state.isShowGlobalLoading = action.payload;

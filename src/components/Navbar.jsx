@@ -9,7 +9,7 @@ import {
   Search,
   SettingsOutlined,
 } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   Box,
@@ -25,6 +25,7 @@ import {
 import { setMode } from "store";
 
 const Navbar = ({ user, onChangeSidebar }) => {
+  const mode = useSelector((state) => state.global.mode);
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -70,7 +71,11 @@ const Navbar = ({ user, onChangeSidebar }) => {
 
         {/* RIGHT BAR */}
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={() => dispatch(setMode())}>
+          <IconButton
+            onClick={() =>
+              dispatch(setMode(mode === "light" ? "dark" : "light"))
+            }
+          >
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
             ) : (
